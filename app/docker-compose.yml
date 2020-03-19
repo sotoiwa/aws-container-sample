@@ -1,0 +1,19 @@
+version: '3'
+services:
+
+  frontend:
+    build: ./frontend
+    image: frontend
+    container_name: frontend
+    ports:
+      - 5000:5000
+    environment:
+      BACKEND_URL: http://backend:5000/messages
+
+  backend:
+    build: ./backend
+    image: backend
+    container_name: backend
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
