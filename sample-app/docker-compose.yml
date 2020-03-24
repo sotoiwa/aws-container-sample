@@ -6,7 +6,7 @@ services:
     image: frontend
     container_name: frontend
     ports:
-      - 5000:5000
+      - 8080:5000
     environment:
       BACKEND_URL: http://backend:5000/messages
 
@@ -15,5 +15,5 @@ services:
     image: backend
     container_name: backend
     environment:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: us-east-1
+      DYNAMODB_TABLE_NAME: messages

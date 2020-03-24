@@ -9,7 +9,7 @@ region_name = os.getenv('AWS_DEFAULT_REGION', 'ap-northeast-1')
 table_name = os.getenv('DYNAMODB_TABLE_NAME', 'messages')
 
 db = boto3.resource('dynamodb', region_name=region_name)
-table = db.Table('messages')
+table = db.Table(table_name)
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
