@@ -2,11 +2,11 @@
 
 from aws_cdk import core
 
-from sample.network_stack import NetworkStack
-from sample.dynamodb_stack import DynamoDbStack
-from sample.cluster_stack import ClusterStack
-from sample.frontend_stack import FrontendStack
-from sample.backend_stack import BackendStack
+from cdksample.network_stack import NetworkStack
+from cdksample.dynamodb_stack import DynamoDbStack
+from cdksample.cluster_stack import ClusterStack
+from cdksample.frontend_stack import FrontendStack
+from cdksample.backend_stack import BackendStack
 
 # スタック間のデータの受け渡しは以下を参考
 # https://github.com/aws-samples/aws-cdk-examples/tree/master/python/codepipeline-docker-build
