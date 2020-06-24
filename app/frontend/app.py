@@ -8,11 +8,10 @@ import requests
 
 
 # 環境変数からバックエンドサービスのURLを取得
-backend_url = os.getenv('BACKEND_URL', 'http://localhost:5050/messages')
+backend_url = os.getenv('BACKEND_URL', 'http://backend:5000/messages')
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'argqtahqtaatayaat'
-
+app.config['SECRET_KEY'] = os.urandom(32)
 
 class MessageForm(FlaskForm):
     message = StringField(validators=[DataRequired()])

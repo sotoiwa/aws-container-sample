@@ -19,7 +19,7 @@ aws dynamodb create-table --table-name 'messages' \
 
 ### アプリケーションの起動
 
-ローカルからリモートのDynamoDBにアクセスキーを使ってアクセスする場合、DynamoDBにアクセス可能なIAMユーザーのクレデンシャルを`app/.env`ファイルに書く。
+ローカルでの実行時にリモートのDynamoDBにアクセスするため、DynamoDBにアクセス可能なIAMユーザーのクレデンシャルを`app/.env`ファイルに書くか、exportする。
 
 ```
 AWS_ACCESS_KEY_ID=
@@ -46,7 +46,7 @@ docker-compose down
 
 ### 準備
 
-DynamoDBはテーブルはCDK内に含めているので既に作成した場合は削除する。
+DynamoDBのテーブルはCDK内に含めているので既に作成した場合は削除する。
 
 ```shell
 aws dynamodb delete-table --table-name 'messages'
@@ -79,7 +79,10 @@ docker tag backend:latest ${backend_repo}:latest
 
 ```shell
 # $(aws ecr get-login --no-include-email)
-aws ecr get-login-password | docker login --username AWS --password-stdin https://${frontend_repo%%/*}
+# aws ecr get-login-password | docker login --username AWS --password-stdin https://${frontend_repo%%/*}
+ACCOUNT_ID=$(aws sts get-caller-identity --output text --query Account)
+AWS_REGION="ap-northeast-1"
+aws ecr get-login-password | docker login --username AWS --password-stdin https://${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 docker push ${frontend_repo}
 docker push ${backend_repo}
 ```
@@ -99,7 +102,7 @@ npm install -g aws-cdk
 Pythonのvirtualenvを作成し、必要なモジュールをインストールする。
 
 ```shell
-python3 -m venv venv
+python3 -m venv .env
 source venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -108,4 +111,25 @@ pip install -r requirements.txt
 
 ```shell
 cdk deploy *Stack
+```
+
+## （補足）CDKの更新
+
+CDKを更新する。
+
+```shell
+# バージョン確認
+cdk --version
+# アップデート有無のチェック
+sudo npm install -g npm-check-updates
+npx npm-check-updates -g aws-cdk
+# CDKのアップデート
+sudo npm install -g aws-cdk
+```
+
+各言語のローカルパッケージを更新する。
+
+```shell
+source venv/bin/activate
+pip list -o | sed -e '1,2d' | cut -f1 -d' ' | xargs pip install -U
 ```
